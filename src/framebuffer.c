@@ -1,4 +1,5 @@
 #include "framebuffer.h"
+#include "goat_debug.h"
 #include <vdp_tile.h>
 #include <vdp_pal.h>
 #include <kdebug.h>
@@ -15,19 +16,8 @@ void gtInitFramebuffer() {
   VDP_setPalette( PAL0, stdPalette );
 
   gtClearFramebuffer();
-}
+  gtFramebufferUpdate();
 
-void gtClearFramebuffer() {
-  for( int i = 0; i != 8960; i++ ) {
-    tiles[ i ] = 0x00000000;
-  }
-}
-
-void gtFramebufferCopy() {
-  VDP_loadTileData( tiles, TILE_USERINDEX, 1120, TRUE );
-}
-
-void gtFramebufferBlit() {
   VDP_fillTileMapRectInc(
     PLAN_A,
     TILE_ATTR_FULL(
@@ -44,15 +34,22 @@ void gtFramebufferBlit() {
   );
 }
 
-void gtFramebufferPlot( unsigned char x, unsigned char y, unsigned char index ) {
-  // Find 8x8 segment (each block on-screen from top left to bottom right occurs in multiples of 8)
-  unsigned char cellX = x / 8;
-  unsigned char cellY = y / 8;
+void gtClearFramebuffer() {
+  for( int i = 0; i != 8960; i++ ) {
+    tiles[ i ] = 0x00000000;
+  }
+}
 
-  unsigned char remX = x % 8;
-  unsigned char remY = y % 8;
+void gtFramebufferUpdate() {
+  VDP_loadTileData( tiles, TILE_USERINDEX, 1120, TRUE );
+}
 
-  unsigned char segment = ( cellX + ( cellY * 40 ) ) * 8;
+void gtFramebufferPlot( u16 x, u16 y, u32 index ) {
+  u16 segment = ( ( ( y / 8 ) * 40 ) + ( x / 8 ) ) * 8;
 
-  u32 selected = tiles[ segment + remY ];
+  u16 rowIndex = segment + ( y % 8 );
+  u8 columnIndex = ( 7 - ( x % 8 ) ) * 4;
+
+  tiles[ rowIndex ] &= ~( 0xF << columnIndex );
+  tiles[ rowIndex ] |= ( index << columnIndex );
 }

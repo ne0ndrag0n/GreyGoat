@@ -1,5 +1,6 @@
 #include <types.h>
 #include <vdp_bg.h>
+#include <tools.h>
 #include <stdio.h>
 #include "framebuffer.h"
 
@@ -9,11 +10,21 @@ int main() {
   VDP_drawText( "Initing...", 0, 0 );
   gtInitFramebuffer();
 
-  VDP_drawText( "Copying...", 0, 1 );
-  gtFramebufferCopy();
+  while(1) {
+    gtClearFramebuffer();
 
-  VDP_drawText( "GreyGoat", 0, 2 );
-  while(1);
+    // Draw 10,000 pixels on screen before blitting
+    for( u16 x = 0; x != 320; x++ ) {
+      u8 lineLength = random() % 224;
+      u8 color = random() % 16;
+
+      for( u16 y = 0; y != lineLength; y++ ) {
+        gtFramebufferPlot( x, y, color );
+      }
+    }
+
+    gtFramebufferUpdate();
+  }
 
   return 0;
 }

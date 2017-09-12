@@ -1,20 +1,15 @@
 /**
  * Software framebuffer for the Sega Megadrive
  */
-#ifndef FRAMEBUFFER_SMD
-#define FRAMEBUFFER_SMD
+#ifndef SMD_FRAMEBUFFER
+#define SMD_FRAMEBUFFER
 
 #include <types.h>
 
 void gtInitFramebuffer();
 void gtClearFramebuffer();
-void gtFramebufferCopy();
-void gtFramebufferBlit();
+void gtFramebufferUpdate();
 
-void gtFramebufferPlot(
-  unsigned char x,
-  unsigned char y,
-  unsigned char index 
-);
+void gtFramebufferPlot( u16 x, u16 y, u32 index );
 
 #endif
