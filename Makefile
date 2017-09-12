@@ -27,10 +27,10 @@ MKISOFS = mkisofs
 
 SCD_LOADER = scd/LukeProjectCD
 
-OPTION =
-INCS = -I. -I$(GENDEV)/m68k-elf/include -I$(GENDEV)/m68k-elf/m68k-elf/include -I$(GENDEV)/sgdk/inc -I$(GENDEV)/sgdk/res -Isrc -Ires
-CCFLAGS = $(OPTION) -m68000 -Wall -O2 -c -fomit-frame-pointer
-HWCCFLAGS = $(OPTION) -m68000 -Wall -O1 -c -fomit-frame-pointer
+OPTION = --std=c11
+INCS = -I. -I./include -I$(GENDEV)/m68k-elf/include -I$(GENDEV)/m68k-elf/m68k-elf/include -I$(GENDEV)/sgdk/inc -I$(GENDEV)/sgdk/res -Isrc -Ires
+CCFLAGS = $(OPTION) -m68000 -Wall -c -fomit-frame-pointer
+HWCCFLAGS = $(OPTION) -m68000 -Wall -c -fomit-frame-pointer
 Z80FLAGS = -vb2
 ASFLAGS = -m68000 --register-prefix-optional
 #LIBS =  -L$(GENDEV)/m68k-elf/lib -L$(GENDEV)/m68k-elf/lib/gcc/m68k-elf/4.8.2 -L$(GENDEV)/m68k-elf/m68k-elf/lib -lmd -lc -lgcc -lnosys -lm
