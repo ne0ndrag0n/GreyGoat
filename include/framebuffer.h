@@ -10,6 +10,6 @@ void gtInitFramebuffer();
 void gtClearFramebuffer();
 void gtFramebufferUpdate();
 
-void gtFramebufferPlot( u16 x, u16 y, u32 index );
+void gtFramebufferPlot( u16 x, u16 y, u8 index );
 
 #endif

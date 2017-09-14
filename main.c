@@ -11,6 +11,7 @@ int main() {
   gtInitFramebuffer();
 
   while(1) {
+
     gtClearFramebuffer();
 
     // Draw 10,000 pixels on screen before blitting

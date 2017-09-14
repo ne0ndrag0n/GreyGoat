@@ -10,7 +10,7 @@ const u16 stdPalette[ 16 ] = {
   0x0888,0x0E00,0x00E0,0x0EE0,0x000E,0x0E0E,0x00EE,0x0EEE
 };
 
-static u32 tiles[ 8961 ];
+static u8 tiles[ 35841 ];
 
 void gtInitFramebuffer() {
   VDP_setPalette( PAL0, stdPalette );
@@ -35,21 +35,27 @@ void gtInitFramebuffer() {
 }
 
 void gtClearFramebuffer() {
-  for( int i = 0; i != 8960; i++ ) {
-    tiles[ i ] = 0x00000000;
+  for( u16 i = 0; i != 35840; i++ ) {
+    tiles[ i ] = 0x00;
   }
 }
 
 void gtFramebufferUpdate() {
-  VDP_loadTileData( tiles, TILE_USERINDEX, 1120, TRUE );
+  VDP_loadTileData( ( u32* ) tiles, TILE_USERINDEX, 1120, TRUE );
 }
 
-void gtFramebufferPlot( u16 x, u16 y, u32 index ) {
-  u16 segment = ( ( ( y / 8 ) * 40 ) + ( x / 8 ) ) * 8;
+void gtFramebufferPlot( u16 x, u16 y, u8 index ) {
+  if( !( x % 2 ) ) {
+    index <<= 4;
+  }
 
-  u16 rowIndex = segment + ( y % 8 );
-  u8 columnIndex = ( 7 - ( x % 8 ) ) * 4;
+  u8 cellX = x / 8;
+  u8 cellY = y / 8;
 
-  tiles[ rowIndex ] &= ~( 0xF << columnIndex );
-  tiles[ rowIndex ] |= ( index << columnIndex );
+  u8 posX = x % 8;
+  u8 posY = y % 8;
+
+  // Get us to the 32x32 cell needed. Then get us to the row in that cell needed. Then get us to the column.
+  u16 offset = ( ( 1280 * cellY ) + ( 32 * cellX ) ) + ( posY * 4 ) + ( posX / 2 );
+  tiles[ offset ] |= index;
 }

@@ -144,7 +144,7 @@ out.iso: out.elf_scd
 	$(BINTOS) $<
 
 %.o: %.c
-	$(CC) $(CCFLAGS) $(INCS) -c $< -o $@
+	$(CC) $(CCFLAGS) $(INCS) -c $< -o $@ #-Wa,-adhln=$@.s
 
 %.o: %.s
 	$(AS) $(ASFLAGS) $< -o $@
