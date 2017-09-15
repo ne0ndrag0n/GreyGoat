@@ -24,8 +24,8 @@ const struct
 } rom_header = {
     "SEGA EVERDRIVE  ",
     "(C) WYVERN  2017",
-    "GreyGoat v0.0.1a Raycaster Test                 ",
-    "GreyGoat v0.0.1a Raycaster Test but with tea    ",
+    "                 Raycaster Test                 ",
+    "                 Raycaster Test but with tea    ",
     "GM 00000000-00",
     0x0000,
     "JD              ",
