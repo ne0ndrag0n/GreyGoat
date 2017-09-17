@@ -6,10 +6,14 @@
 
 #include <types.h>
 
+#define ScreenX 320
+#define ScreenY 200
+#define TileSize 64
+#define PlayerHeight 32
+#define AngleIncrement FIX32( 0.188 )
+
 #define mapWidth 24
 #define mapHeight 24
-
-extern const u8 worldMap[ mapWidth ][ mapHeight ];
 
 void gtRaycasterFrame();
 
