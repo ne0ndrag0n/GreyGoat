@@ -15,6 +15,12 @@
 #define mapWidth 24
 #define mapHeight 24
 
+// why the fuck isn't this in maths.h for sgdk
+typedef struct {
+  fix32 x;
+  fix32 y;
+} Vect2D_f32;
+
 void gtRaycasterFrame();
 
 #endif
