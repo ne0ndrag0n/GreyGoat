@@ -69,9 +69,21 @@ void gtRaycasterFrame() {
     }
 
     // Calculate A.x and Xa
-    fix32 intermediate = fix32Div( FIX32( position.y - horizInt.y ), tanLookup[ rayAngle ] );
-    horizInt.x = fix32ToInt( fix32Add( FIX32( position.x ), intermediate ) );
-    step.x = fix32ToInt( fix32Div( 64, tanLookup[ rayAngle ] ) );
+    horizInt.x = fix32ToInt(
+      fix32Add(
+        FIX32( position.x ),
+        fix32Div(
+          FIX32( position.y - horizInt.y ),
+          tanLookup[ rayAngle ]
+        )
+      )
+    );
+    step.x = fix32ToInt(
+      fix32Div(
+        FIX32( 64.0 ),
+        tanLookup[ rayAngle ]
+      )
+    );
 
     // Used for computed distances
     Vect2D_f32 distances = { FIX32( 0.0 ), FIX32( 0.0 ) };

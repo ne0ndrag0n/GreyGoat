@@ -159,7 +159,7 @@ Linker script and memory map
                 0x0000000000000000                __DYNAMIC = 0x0
                 0x0000000001000000                PROVIDE (__stack, 0x1000000)
 
-.text           0x0000000000000000    0x17c08
+.text           0x0000000000000000    0x17c10
  *(.text .text.*)
  .text          0x0000000000000000        0x0 boot/sega.o
  .text.keepboot
@@ -721,93 +721,94 @@ Linker script and memory map
  .text          0x0000000000013590       0x2e /opt/gendev/lib/gcc/m68k-elf/6.3.0/libgcc.a(_umodsi3.o)
                 0x0000000000013590                __umodsi3
  *fill*         0x00000000000135be        0x2 
- .text          0x00000000000135c0      0x204 src/raycast.o
+ .text          0x00000000000135c0      0x20a src/raycast.o
                 0x00000000000135c0                gtRaycasterFrame
- .text          0x00000000000137c4      0x158 src/framebuffer.o
-                0x00000000000137c4                gtInitFramebuffer
-                0x0000000000013802                gtClearFramebuffer
-                0x0000000000013834                gtFramebufferUpdate
-                0x0000000000013854                gtFramebufferPlot
- .text          0x000000000001391c       0x44 src/goat_debug.o
-                0x000000000001391c                gtDebugPrintU32
- .text          0x0000000000013960       0x34 main.o
-                0x0000000000013960                main
- .text          0x0000000000013994       0x2e /opt/gendev/sgdk1_3/lib/libgcc.a(_modsi3.o)
-                0x0000000000013994                __modsi3
-                0x00000000000139c4                . = ALIGN (0x4)
- *fill*         0x00000000000139c2        0x2 
-                0x00000000000139c4                __CTOR_LIST__ = .
-                0x00000000000139c4                ___CTOR_LIST__ = .
-                0x00000000000139c4        0x4 LONG 0x0 (((__CTOR_END__ - __CTOR_LIST__) / 0x4) - 0x2)
+ *fill*         0x00000000000137ca        0x2 
+ .text          0x00000000000137cc      0x158 src/framebuffer.o
+                0x00000000000137cc                gtInitFramebuffer
+                0x000000000001380a                gtClearFramebuffer
+                0x000000000001383c                gtFramebufferUpdate
+                0x000000000001385c                gtFramebufferPlot
+ .text          0x0000000000013924       0x44 src/goat_debug.o
+                0x0000000000013924                gtDebugPrintU32
+ .text          0x0000000000013968       0x34 main.o
+                0x0000000000013968                main
+ .text          0x000000000001399c       0x2e /opt/gendev/sgdk1_3/lib/libgcc.a(_modsi3.o)
+                0x000000000001399c                __modsi3
+                0x00000000000139cc                . = ALIGN (0x4)
+ *fill*         0x00000000000139ca        0x2 
+                0x00000000000139cc                __CTOR_LIST__ = .
+                0x00000000000139cc                ___CTOR_LIST__ = .
+                0x00000000000139cc        0x4 LONG 0x0 (((__CTOR_END__ - __CTOR_LIST__) / 0x4) - 0x2)
  *(.ctors)
-                0x00000000000139c8        0x4 LONG 0x0
-                0x00000000000139cc                __CTOR_END__ = .
-                0x00000000000139cc                __DTOR_LIST__ = .
-                0x00000000000139cc                ___DTOR_LIST__ = .
-                0x00000000000139cc        0x4 LONG 0x0 (((__DTOR_END__ - __DTOR_LIST__) / 0x4) - 0x2)
- *(.dtors)
                 0x00000000000139d0        0x4 LONG 0x0
-                0x00000000000139d4                __DTOR_END__ = .
+                0x00000000000139d4                __CTOR_END__ = .
+                0x00000000000139d4                __DTOR_LIST__ = .
+                0x00000000000139d4                ___DTOR_LIST__ = .
+                0x00000000000139d4        0x4 LONG 0x0 (((__DTOR_END__ - __DTOR_LIST__) / 0x4) - 0x2)
+ *(.dtors)
+                0x00000000000139d8        0x4 LONG 0x0
+                0x00000000000139dc                __DTOR_END__ = .
  *(.rodata .rodata.*)
  .rodata.str1.1
-                0x00000000000139d4      0x13e /opt/gendev/sgdk1_3/lib/libmd.a(sys.o)
+                0x00000000000139dc      0x13e /opt/gendev/sgdk1_3/lib/libmd.a(sys.o)
  .rodata.str1.1
-                0x0000000000013b12       0x21 /opt/gendev/sgdk1_3/lib/libmd.a(vdp.o)
+                0x0000000000013b1a       0x21 /opt/gendev/sgdk1_3/lib/libmd.a(vdp.o)
                                          0x4c (size before relaxing)
- *fill*         0x0000000000013b33        0x1 
- .rodata        0x0000000000013b34        0x6 /opt/gendev/sgdk1_3/lib/libmd.a(vdp.o)
-                0x0000000000013b34                PLAN_WINDOW
-                0x0000000000013b36                PLAN_B
-                0x0000000000013b38                PLAN_A
+ *fill*         0x0000000000013b3b        0x1 
+ .rodata        0x0000000000013b3c        0x6 /opt/gendev/sgdk1_3/lib/libmd.a(vdp.o)
+                0x0000000000013b3c                PLAN_WINDOW
+                0x0000000000013b3e                PLAN_B
+                0x0000000000013b40                PLAN_A
  .rodata.str1.1
                 0x0000000000000000        0x2 /opt/gendev/sgdk1_3/lib/libmd.a(tools.o)
  .rodata.str1.1
-                0x0000000000013b3a       0x41 /opt/gendev/sgdk1_3/lib/libmd.a(memory.o)
+                0x0000000000013b42       0x41 /opt/gendev/sgdk1_3/lib/libmd.a(memory.o)
                                          0x42 (size before relaxing)
- *fill*         0x0000000000013b7b        0x1 
- .rodata        0x0000000000013b7c      0x104 /opt/gendev/sgdk1_3/lib/libmd.a(vdp_pal.o)
-                0x0000000000013b7c                palette_blue
-                0x0000000000013b9c                palette_green
-                0x0000000000013bbc                palette_red
-                0x0000000000013bdc                palette_grey
-                0x0000000000013bfc                palette_black
-                0x0000000000013c00                palette_black_all
- .rodata        0x0000000000013c80      0xe40 /opt/gendev/sgdk1_3/lib/libmd.a(z80_vgm.o)
-                0x0000000000013c80                z80_vgm
+ *fill*         0x0000000000013b83        0x1 
+ .rodata        0x0000000000013b84      0x104 /opt/gendev/sgdk1_3/lib/libmd.a(vdp_pal.o)
+                0x0000000000013b84                palette_blue
+                0x0000000000013ba4                palette_green
+                0x0000000000013bc4                palette_red
+                0x0000000000013be4                palette_grey
+                0x0000000000013c04                palette_black
+                0x0000000000013c08                palette_black_all
+ .rodata        0x0000000000013c88      0xe40 /opt/gendev/sgdk1_3/lib/libmd.a(z80_vgm.o)
+                0x0000000000013c88                z80_vgm
  .rodata.str1.1
-                0x0000000000014ac0        0x7 /opt/gendev/sgdk1_3/lib/libmd.a(string.o)
- .rodata        0x0000000000014ac7       0xeb /opt/gendev/sgdk1_3/lib/libmd.a(string.o)
- .rodata        0x0000000000014bb2      0xcec /opt/gendev/sgdk1_3/lib/libmd.a(libres.o)
-                0x0000000000015558                logo_lib
-                0x00000000000157c2                font_lib
-                0x00000000000157ea                font_pal_lib
-                0x00000000000157f2                stop_xgm
- .rodata        0x000000000001589e     0x1000 /opt/gendev/sgdk1_3/lib/libmd.a(tab_vol.o)
-                0x000000000001589e                tab_vol
- .rodata        0x000000000001689e       0x18 /opt/gendev/sgdk1_3/lib/libmd.a(joy.o)
- .rodata        0x00000000000168b6     0x1320 src/raycast.o
-                0x00000000000168b6                sinLookup
-                0x0000000000016e56                cosLookup
-                0x00000000000173f6                tanLookup
-                0x0000000000017996                worldMap
- .rodata        0x0000000000017bd6       0x20 src/framebuffer.o
-                0x0000000000017bd6                stdPalette
- .rodata        0x0000000000017bf6        0xb main.o
+                0x0000000000014ac8        0x7 /opt/gendev/sgdk1_3/lib/libmd.a(string.o)
+ .rodata        0x0000000000014acf       0xeb /opt/gendev/sgdk1_3/lib/libmd.a(string.o)
+ .rodata        0x0000000000014bba      0xcec /opt/gendev/sgdk1_3/lib/libmd.a(libres.o)
+                0x0000000000015560                logo_lib
+                0x00000000000157ca                font_lib
+                0x00000000000157f2                font_pal_lib
+                0x00000000000157fa                stop_xgm
+ .rodata        0x00000000000158a6     0x1000 /opt/gendev/sgdk1_3/lib/libmd.a(tab_vol.o)
+                0x00000000000158a6                tab_vol
+ .rodata        0x00000000000168a6       0x18 /opt/gendev/sgdk1_3/lib/libmd.a(joy.o)
+ .rodata        0x00000000000168be     0x1320 src/raycast.o
+                0x00000000000168be                sinLookup
+                0x0000000000016e5e                cosLookup
+                0x00000000000173fe                tanLookup
+                0x000000000001799e                worldMap
+ .rodata        0x0000000000017bde       0x20 src/framebuffer.o
+                0x0000000000017bde                stdPalette
+ .rodata        0x0000000000017bfe        0xb main.o
  *(.gcc_except_table .gcc_except_table.*)
-                0x0000000000017c04                . = ALIGN (0x4)
- *fill*         0x0000000000017c01        0x3 
-                0x0000000000017c04                __INIT_SECTION__ = .
+                0x0000000000017c0c                . = ALIGN (0x4)
+ *fill*         0x0000000000017c09        0x3 
+                0x0000000000017c0c                __INIT_SECTION__ = .
  *(.init)
-                0x0000000000017c04        0x2 SHORT 0x4e75
-                0x0000000000017c06                __FINI_SECTION__ = .
+                0x0000000000017c0c        0x2 SHORT 0x4e75
+                0x0000000000017c0e                __FINI_SECTION__ = .
  *(.fini)
-                0x0000000000017c06        0x2 SHORT 0x4e75
-                0x0000000000017c08                _etext = .
+                0x0000000000017c0e        0x2 SHORT 0x4e75
+                0x0000000000017c10                _etext = .
  *(.lit)
-                0x0000000000017c08                . = ALIGN (0x4)
-                0x0000000000017c08                _stext = SIZEOF (.text)
+                0x0000000000017c10                . = ALIGN (0x4)
+                0x0000000000017c10                _stext = SIZEOF (.text)
 
-.data           0x0000000000ff0000        0x4 load address 0x0000000000017c08
+.data           0x0000000000ff0000        0x4 load address 0x0000000000017c10
  *(.got.plt)
  *(.got)
  *(.shdata)
@@ -865,7 +866,7 @@ Linker script and memory map
                 0x0000000000ff0004                . = ALIGN (0x4)
                 0x0000000000000004                _sdata = SIZEOF (.data)
 
-.bss            0x0000000000ff0004     0x95b0 load address 0x0000000000017c0c
+.bss            0x0000000000ff0004     0x95b0 load address 0x0000000000017c14
                 0x0000000000ff0004                __bss_start = .
  *(.shbss)
  *(.bss .bss.*)
