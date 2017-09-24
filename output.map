@@ -6,8 +6,6 @@ Archive member included because of file (symbol)
                               /opt/gendev/sgdk1_3/lib/libmd.a(sys.o) (VDP_init)
 /opt/gendev/sgdk1_3/lib/libmd.a(dma.o)
                               /opt/gendev/sgdk1_3/lib/libmd.a(sys.o) (DMA_init)
-/opt/gendev/sgdk1_3/lib/libmd.a(psg.o)
-                              /opt/gendev/sgdk1_3/lib/libmd.a(sys.o) (PSG_init)
 /opt/gendev/sgdk1_3/lib/libmd.a(tools.o)
                               /opt/gendev/sgdk1_3/lib/libmd.a(sys.o) (setRandomSeed)
 /opt/gendev/sgdk1_3/lib/libmd.a(memory.o)
@@ -20,6 +18,8 @@ Archive member included because of file (symbol)
                               /opt/gendev/sgdk1_3/lib/libmd.a(z80_ctrl.o) (YM2612_reset)
 /opt/gendev/sgdk1_3/lib/libmd.a(vdp_pal.o)
                               /opt/gendev/sgdk1_3/lib/libmd.a(sys.o) (VDP_doStepFading)
+/opt/gendev/sgdk1_3/lib/libmd.a(psg.o)
+                              /opt/gendev/sgdk1_3/lib/libmd.a(sys.o) (PSG_init)
 /opt/gendev/sgdk1_3/lib/libmd.a(z80_vgm.o)
                               /opt/gendev/sgdk1_3/lib/libmd.a(z80_ctrl.o) (z80_vgm)
 /opt/gendev/sgdk1_3/lib/libmd.a(vdp_spr.o)
@@ -83,7 +83,7 @@ Archive member included because of file (symbol)
 /opt/gendev/lib/gcc/m68k-elf/6.3.0/libgcc.a(_udivsi3.o)
                               /opt/gendev/sgdk1_3/lib/libmd.a(tools.o) (__udivsi3)
 /opt/gendev/lib/gcc/m68k-elf/6.3.0/libgcc.a(_divsi3.o)
-                              /opt/gendev/sgdk1_3/lib/libmd.a(psg.o) (__divsi3)
+                              /opt/gendev/sgdk1_3/lib/libmd.a(vdp_pal.o) (__divsi3)
 /opt/gendev/lib/gcc/m68k-elf/6.3.0/libgcc.a(_umodsi3.o)
                               /opt/gendev/sgdk1_3/lib/libmd.a(string.o) (__umodsi3)
 /opt/gendev/sgdk1_3/lib/libgcc.a(_modsi3.o)
@@ -150,8 +150,8 @@ addrState           0x4               /opt/gendev/sgdk1_3/lib/libmd.a(sys.o)
 Memory Configuration
 
 Name             Origin             Length             Attributes
-rom              0x0000000000000000 0x0000000000400000 xr
-ram              0x0000000000ff0000 0x0000000000010000 xw
+rom              0x0000000000000000 0x0000000000a00000
+ram              0x0000000000ff0000 0x0000000000010000
 *default*        0x0000000000000000 0xffffffffffffffff
 
 Linker script and memory map
@@ -159,12 +159,14 @@ Linker script and memory map
                 0x0000000000000000                __DYNAMIC = 0x0
                 0x0000000001000000                PROVIDE (__stack, 0x1000000)
 
-.text           0x0000000000000000    0x17c10
- *(.text .text.*)
- .text          0x0000000000000000        0x0 boot/sega.o
+.text           0x0000000000000000    0x17df4
+ *(.text.keepboot)
  .text.keepboot
                 0x0000000000000000      0x5ec boot/sega.o
                 0x0000000000000262                _hard_reset
+ *(.text.*)
+ *(.text)
+ .text          0x00000000000005ec        0x0 boot/sega.o
  .text          0x00000000000005ec      0xa08 /opt/gendev/sgdk1_3/lib/libmd.a(sys.o)
                 0x00000000000005ec                _trace_callback
                 0x00000000000005ee                _line1x1x_callback
@@ -260,177 +262,177 @@ Linker script and memory map
                 0x0000000000001f10                DMA_doDma
                 0x000000000000206a                DMA_doVRamFill
                 0x0000000000002116                DMA_doVRamCopy
- .text          0x000000000000219c      0x11c /opt/gendev/sgdk1_3/lib/libmd.a(psg.o)
-                0x000000000000219c                PSG_init
-                0x00000000000021d4                PSG_write
-                0x00000000000021de                PSG_setEnvelope
-                0x0000000000002200                PSG_setTone
-                0x0000000000002232                PSG_setFrequency
-                0x0000000000002294                PSG_setNoise
- .text          0x00000000000022b8     0x2132 /opt/gendev/sgdk1_3/lib/libmd.a(tools.o)
-                0x00000000000022b8                setRandomSeed
-                0x00000000000022c8                random
-                0x00000000000022ee                getFPS
-                0x0000000000002356                getFPS_f
-                0x00000000000023d8                KLog
-                0x00000000000023fc                KLog_U1
-                0x0000000000002448                KLog_U1_
-                0x00000000000024a0                KLog_U2
-                0x000000000000250e                KLog_U2_
-                0x0000000000002584                KLog_U3
-                0x0000000000002610                KLog_U3_
-                0x00000000000026a4                KLog_U4
-                0x000000000000274c                KLog_U4_
-                0x00000000000027fe                KLog_U1x
-                0x0000000000002852                KLog_U1x_
-                0x00000000000028b2                KLog_U2x
-                0x0000000000002926                KLog_U2x_
-                0x00000000000029a2                KLog_U3x
-                0x0000000000002a32                KLog_U3x_
-                0x0000000000002aca                KLog_U4x
-                0x0000000000002b74                KLog_U4x_
-                0x0000000000002c28                KLog_S1
-                0x0000000000002c74                KLog_S1_
-                0x0000000000002ccc                KLog_S2
-                0x0000000000002d3a                KLog_S2_
-                0x0000000000002db0                KLog_S3
-                0x0000000000002e3c                KLog_S3_
-                0x0000000000002ed0                KLog_S4
-                0x0000000000002f78                KLog_S4_
-                0x000000000000302a                KLog_S1x
-                0x000000000000307e                KLog_S2x
-                0x00000000000030f2                KLog_S3x
-                0x0000000000003182                KLog_S4x
-                0x000000000000322c                KLog_f1
-                0x000000000000327c                KLog_f2
-                0x00000000000032f2                KLog_f3
-                0x000000000000338a                KLog_f4
-                0x0000000000003442                KLog_f1x
-                0x0000000000003496                KLog_f2x
-                0x000000000000350e                KLog_f3x
-                0x00000000000035a6                KLog_f4x
-                0x000000000000365c                KLog_F1
-                0x00000000000036a8                KLog_F2
-                0x0000000000003716                KLog_F3
-                0x00000000000037a2                KLog_F4
-                0x000000000000384a                KLog_F1x
-                0x000000000000389a                KLog_F2x
-                0x000000000000390a                KLog_F3x
-                0x0000000000003996                KLog_F4x
-                0x0000000000003a3c                allocateBitmap
-                0x0000000000003a9c                allocateBitmapEx
-                0x0000000000003ade                allocateTileSet
-                0x0000000000003b28                allocateTileSetEx
-                0x0000000000003b54                allocateMap
-                0x0000000000003b9e                allocateMapEx
-                0x0000000000003bc8                allocateImage
-                0x0000000000003c86                unpack
-                0x0000000000003cbe                unpackBitmap
-                0x0000000000003d52                unpackTileSet
-                0x0000000000003dc6                unpackMap
-                0x0000000000003e3e                unpackImage
-                0x0000000000003e96                partition_u8
-                0x0000000000003f1a                qsort_u8
-                0x0000000000003f6a                partition_s8
-                0x0000000000003fee                qsort_s8
-                0x000000000000403e                partition_u16
-                0x00000000000040d0                qsort_u16
-                0x0000000000004120                partition_s16
-                0x00000000000041b2                qsort_s16
-                0x0000000000004202                partition_u32
-                0x00000000000042a6                qsort_u32
-                0x00000000000042f6                partition_s32
-                0x000000000000439a                qsort_s32
- *fill*         0x00000000000043ea        0x2 
- .text          0x00000000000043ec      0x430 /opt/gendev/sgdk1_3/lib/libmd.a(memory.o)
-                0x00000000000043ec                MEM_init
-                0x0000000000004414                MEM_getFree
-                0x0000000000004442                MEM_getAllocated
-                0x0000000000004478                MEM_free
-                0x000000000000448a                MEM_alloc
-                0x0000000000004560                MEM_dump
-                0x0000000000004728                memcpyU16
-                0x0000000000004746                memcpyU32
-                0x0000000000004766                fastMemset
-                0x0000000000004786                fastMemsetU16
-                0x00000000000047a6                fastMemsetU32
-                0x00000000000047c2                fastMemcpy
-                0x00000000000047de                fastMemcpyU16
-                0x00000000000047fc                fastMemcpyU32
- .text          0x000000000000481c      0xca2 /opt/gendev/sgdk1_3/lib/libmd.a(vdp_tile.o)
-                0x000000000000481c                VDP_loadTileSet
-                0x000000000000489e                VDP_loadFontData
-                0x00000000000048ce                VDP_loadFont
-                0x00000000000048f4                VDP_loadBMPTileDataEx
-                0x000000000000494c                VDP_fillTileData
-                0x0000000000004998                VDP_setTileMap
-                0x00000000000049d6                VDP_setTileMapXY
-                0x0000000000004a8c                VDP_fillTileMap
-                0x0000000000004b22                VDP_fillTileMapRectByIndex
-                0x0000000000004b4c                VDP_fillTileMapRect
-                0x0000000000004c56                VDP_clearTileMap
-                0x0000000000004c94                VDP_clearTileMapRectByIndex
-                0x0000000000004cbe                VDP_clearTileMapRect
-                0x0000000000004cf0                VDP_fillTileMapInc
-                0x0000000000004db4                VDP_fillTileMapRectIncByIndex
-                0x0000000000004dde                VDP_fillTileMapRectInc
-                0x0000000000004eee                VDP_setTileMapData
-                0x0000000000004fc6                VDP_setTileMapRectByIndex
-                0x0000000000004ff4                VDP_setTileMapDataRect
-                0x0000000000005116                VDP_setTileMapDataEx
-                0x0000000000005202                VDP_setTileMapRectExByIndex
-                0x0000000000005234                VDP_setTileMapDataRectEx
-                0x0000000000005378                VDP_setTileMapRectEx
-                0x00000000000053ba                VDP_setMapEx
-                0x000000000000547c                VDP_setMap
- *fill*         0x00000000000054be        0x2 
- .text          0x00000000000054c0      0x620 /opt/gendev/sgdk1_3/lib/libmd.a(z80_ctrl.o)
-                0x00000000000054c0                Z80_isBusTaken
-                0x00000000000054d2                Z80_requestBus
-                0x00000000000054f8                Z80_releaseBus
-                0x0000000000005502                Z80_startReset
-                0x000000000000550c                Z80_endReset
-                0x0000000000005516                Z80_setBank
-                0x000000000000552a                Z80_init
-                0x0000000000005548                Z80_read
-                0x000000000000555a                Z80_write
-                0x000000000000556e                Z80_clear
-                0x00000000000055e8                Z80_upload
-                0x0000000000005660                Z80_download
-                0x00000000000056b8                Z80_getLoadedDriver
-                0x00000000000056c0                Z80_unloadDriver
-                0x00000000000056f4                Z80_loadCustomDriver
-                0x0000000000005738                Z80_isDriverReady
-                0x000000000000576e                Z80_loadDriver
- .text          0x0000000000005ae0      0x1f0 /opt/gendev/sgdk1_3/lib/libmd.a(ym2612.o)
-                0x0000000000005ae0                YM2612_read
-                0x0000000000005afa                YM2612_write
-                0x0000000000005b20                YM2612_reset
-                0x0000000000005c06                YM2612_writeSafe
-                0x0000000000005c1e                YM2612_writeReg
-                0x0000000000005c70                YM2612_writeRegSafe
-                0x0000000000005c92                YM2612_enableDAC
-                0x0000000000005cb2                YM2612_disableDAC
- .text          0x0000000000005cd0      0x6c4 /opt/gendev/sgdk1_3/lib/libmd.a(vdp_pal.o)
-                0x0000000000005dc8                VDP_getPaletteColor
-                0x0000000000005dfc                VDP_setPaletteColor
-                0x0000000000005e36                VDP_doStepFading
-                0x0000000000005f5c                VDP_initFading
-                0x00000000000060ae                VDP_interruptFade
-                0x00000000000060c0                VDP_fade
-                0x0000000000006124                VDP_fadeTo
-                0x000000000000618e                VDP_fadeOut
-                0x00000000000061be                VDP_fadeIn
-                0x00000000000061f2                VDP_fadePal
-                0x000000000000622e                VDP_fadePalTo
-                0x0000000000006266                VDP_fadePalOut
-                0x00000000000062a0                VDP_fadePalIn
-                0x00000000000062de                VDP_fadeAll
-                0x0000000000006306                VDP_fadeAllTo
-                0x000000000000632a                VDP_fadeOutAll
-                0x0000000000006350                VDP_fadeInAll
-                0x000000000000637a                VDP_isDoingFade
-                0x0000000000006386                VDP_waitFadeCompletion
+ .text          0x000000000000219c     0x2132 /opt/gendev/sgdk1_3/lib/libmd.a(tools.o)
+                0x000000000000219c                setRandomSeed
+                0x00000000000021ac                random
+                0x00000000000021d2                getFPS
+                0x000000000000223a                getFPS_f
+                0x00000000000022bc                KLog
+                0x00000000000022e0                KLog_U1
+                0x000000000000232c                KLog_U1_
+                0x0000000000002384                KLog_U2
+                0x00000000000023f2                KLog_U2_
+                0x0000000000002468                KLog_U3
+                0x00000000000024f4                KLog_U3_
+                0x0000000000002588                KLog_U4
+                0x0000000000002630                KLog_U4_
+                0x00000000000026e2                KLog_U1x
+                0x0000000000002736                KLog_U1x_
+                0x0000000000002796                KLog_U2x
+                0x000000000000280a                KLog_U2x_
+                0x0000000000002886                KLog_U3x
+                0x0000000000002916                KLog_U3x_
+                0x00000000000029ae                KLog_U4x
+                0x0000000000002a58                KLog_U4x_
+                0x0000000000002b0c                KLog_S1
+                0x0000000000002b58                KLog_S1_
+                0x0000000000002bb0                KLog_S2
+                0x0000000000002c1e                KLog_S2_
+                0x0000000000002c94                KLog_S3
+                0x0000000000002d20                KLog_S3_
+                0x0000000000002db4                KLog_S4
+                0x0000000000002e5c                KLog_S4_
+                0x0000000000002f0e                KLog_S1x
+                0x0000000000002f62                KLog_S2x
+                0x0000000000002fd6                KLog_S3x
+                0x0000000000003066                KLog_S4x
+                0x0000000000003110                KLog_f1
+                0x0000000000003160                KLog_f2
+                0x00000000000031d6                KLog_f3
+                0x000000000000326e                KLog_f4
+                0x0000000000003326                KLog_f1x
+                0x000000000000337a                KLog_f2x
+                0x00000000000033f2                KLog_f3x
+                0x000000000000348a                KLog_f4x
+                0x0000000000003540                KLog_F1
+                0x000000000000358c                KLog_F2
+                0x00000000000035fa                KLog_F3
+                0x0000000000003686                KLog_F4
+                0x000000000000372e                KLog_F1x
+                0x000000000000377e                KLog_F2x
+                0x00000000000037ee                KLog_F3x
+                0x000000000000387a                KLog_F4x
+                0x0000000000003920                allocateBitmap
+                0x0000000000003980                allocateBitmapEx
+                0x00000000000039c2                allocateTileSet
+                0x0000000000003a0c                allocateTileSetEx
+                0x0000000000003a38                allocateMap
+                0x0000000000003a82                allocateMapEx
+                0x0000000000003aac                allocateImage
+                0x0000000000003b6a                unpack
+                0x0000000000003ba2                unpackBitmap
+                0x0000000000003c36                unpackTileSet
+                0x0000000000003caa                unpackMap
+                0x0000000000003d22                unpackImage
+                0x0000000000003d7a                partition_u8
+                0x0000000000003dfe                qsort_u8
+                0x0000000000003e4e                partition_s8
+                0x0000000000003ed2                qsort_s8
+                0x0000000000003f22                partition_u16
+                0x0000000000003fb4                qsort_u16
+                0x0000000000004004                partition_s16
+                0x0000000000004096                qsort_s16
+                0x00000000000040e6                partition_u32
+                0x000000000000418a                qsort_u32
+                0x00000000000041da                partition_s32
+                0x000000000000427e                qsort_s32
+ *fill*         0x00000000000042ce        0x2 
+ .text          0x00000000000042d0      0x430 /opt/gendev/sgdk1_3/lib/libmd.a(memory.o)
+                0x00000000000042d0                MEM_init
+                0x00000000000042f8                MEM_getFree
+                0x0000000000004326                MEM_getAllocated
+                0x000000000000435c                MEM_free
+                0x000000000000436e                MEM_alloc
+                0x0000000000004444                MEM_dump
+                0x000000000000460c                memcpyU16
+                0x000000000000462a                memcpyU32
+                0x000000000000464a                fastMemset
+                0x000000000000466a                fastMemsetU16
+                0x000000000000468a                fastMemsetU32
+                0x00000000000046a6                fastMemcpy
+                0x00000000000046c2                fastMemcpyU16
+                0x00000000000046e0                fastMemcpyU32
+ .text          0x0000000000004700      0xca2 /opt/gendev/sgdk1_3/lib/libmd.a(vdp_tile.o)
+                0x0000000000004700                VDP_loadTileSet
+                0x0000000000004782                VDP_loadFontData
+                0x00000000000047b2                VDP_loadFont
+                0x00000000000047d8                VDP_loadBMPTileDataEx
+                0x0000000000004830                VDP_fillTileData
+                0x000000000000487c                VDP_setTileMap
+                0x00000000000048ba                VDP_setTileMapXY
+                0x0000000000004970                VDP_fillTileMap
+                0x0000000000004a06                VDP_fillTileMapRectByIndex
+                0x0000000000004a30                VDP_fillTileMapRect
+                0x0000000000004b3a                VDP_clearTileMap
+                0x0000000000004b78                VDP_clearTileMapRectByIndex
+                0x0000000000004ba2                VDP_clearTileMapRect
+                0x0000000000004bd4                VDP_fillTileMapInc
+                0x0000000000004c98                VDP_fillTileMapRectIncByIndex
+                0x0000000000004cc2                VDP_fillTileMapRectInc
+                0x0000000000004dd2                VDP_setTileMapData
+                0x0000000000004eaa                VDP_setTileMapRectByIndex
+                0x0000000000004ed8                VDP_setTileMapDataRect
+                0x0000000000004ffa                VDP_setTileMapDataEx
+                0x00000000000050e6                VDP_setTileMapRectExByIndex
+                0x0000000000005118                VDP_setTileMapDataRectEx
+                0x000000000000525c                VDP_setTileMapRectEx
+                0x000000000000529e                VDP_setMapEx
+                0x0000000000005360                VDP_setMap
+ *fill*         0x00000000000053a2        0x2 
+ .text          0x00000000000053a4      0x620 /opt/gendev/sgdk1_3/lib/libmd.a(z80_ctrl.o)
+                0x00000000000053a4                Z80_isBusTaken
+                0x00000000000053b6                Z80_requestBus
+                0x00000000000053dc                Z80_releaseBus
+                0x00000000000053e6                Z80_startReset
+                0x00000000000053f0                Z80_endReset
+                0x00000000000053fa                Z80_setBank
+                0x000000000000540e                Z80_init
+                0x000000000000542c                Z80_read
+                0x000000000000543e                Z80_write
+                0x0000000000005452                Z80_clear
+                0x00000000000054cc                Z80_upload
+                0x0000000000005544                Z80_download
+                0x000000000000559c                Z80_getLoadedDriver
+                0x00000000000055a4                Z80_unloadDriver
+                0x00000000000055d8                Z80_loadCustomDriver
+                0x000000000000561c                Z80_isDriverReady
+                0x0000000000005652                Z80_loadDriver
+ .text          0x00000000000059c4      0x1f0 /opt/gendev/sgdk1_3/lib/libmd.a(ym2612.o)
+                0x00000000000059c4                YM2612_read
+                0x00000000000059de                YM2612_write
+                0x0000000000005a04                YM2612_reset
+                0x0000000000005aea                YM2612_writeSafe
+                0x0000000000005b02                YM2612_writeReg
+                0x0000000000005b54                YM2612_writeRegSafe
+                0x0000000000005b76                YM2612_enableDAC
+                0x0000000000005b96                YM2612_disableDAC
+ .text          0x0000000000005bb4      0x6c4 /opt/gendev/sgdk1_3/lib/libmd.a(vdp_pal.o)
+                0x0000000000005cac                VDP_getPaletteColor
+                0x0000000000005ce0                VDP_setPaletteColor
+                0x0000000000005d1a                VDP_doStepFading
+                0x0000000000005e40                VDP_initFading
+                0x0000000000005f92                VDP_interruptFade
+                0x0000000000005fa4                VDP_fade
+                0x0000000000006008                VDP_fadeTo
+                0x0000000000006072                VDP_fadeOut
+                0x00000000000060a2                VDP_fadeIn
+                0x00000000000060d6                VDP_fadePal
+                0x0000000000006112                VDP_fadePalTo
+                0x000000000000614a                VDP_fadePalOut
+                0x0000000000006184                VDP_fadePalIn
+                0x00000000000061c2                VDP_fadeAll
+                0x00000000000061ea                VDP_fadeAllTo
+                0x000000000000620e                VDP_fadeOutAll
+                0x0000000000006234                VDP_fadeInAll
+                0x000000000000625e                VDP_isDoingFade
+                0x000000000000626a                VDP_waitFadeCompletion
+ .text          0x0000000000006278      0x11c /opt/gendev/sgdk1_3/lib/libmd.a(psg.o)
+                0x0000000000006278                PSG_init
+                0x00000000000062b0                PSG_write
+                0x00000000000062ba                PSG_setEnvelope
+                0x00000000000062dc                PSG_setTone
+                0x000000000000630e                PSG_setFrequency
+                0x0000000000006370                PSG_setNoise
  .text          0x0000000000006394        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(z80_vgm.o)
  .text          0x0000000000006394      0x4c6 /opt/gendev/sgdk1_3/lib/libmd.a(vdp_spr.o)
                 0x0000000000006394                VDP_releaseAllSprites
@@ -721,94 +723,92 @@ Linker script and memory map
  .text          0x0000000000013590       0x2e /opt/gendev/lib/gcc/m68k-elf/6.3.0/libgcc.a(_umodsi3.o)
                 0x0000000000013590                __umodsi3
  *fill*         0x00000000000135be        0x2 
- .text          0x00000000000135c0      0x20a src/raycast.o
+ .text          0x00000000000135c0      0x39a src/raycast.o
                 0x00000000000135c0                gtRaycasterFrame
- *fill*         0x00000000000137ca        0x2 
- .text          0x00000000000137cc      0x158 src/framebuffer.o
-                0x00000000000137cc                gtInitFramebuffer
-                0x000000000001380a                gtClearFramebuffer
-                0x000000000001383c                gtFramebufferUpdate
-                0x000000000001385c                gtFramebufferPlot
- .text          0x0000000000013924       0x44 src/goat_debug.o
-                0x0000000000013924                gtDebugPrintU32
- .text          0x0000000000013968       0x34 main.o
-                0x0000000000013968                main
- .text          0x000000000001399c       0x2e /opt/gendev/sgdk1_3/lib/libgcc.a(_modsi3.o)
-                0x000000000001399c                __modsi3
-                0x00000000000139cc                . = ALIGN (0x4)
- *fill*         0x00000000000139ca        0x2 
-                0x00000000000139cc                __CTOR_LIST__ = .
-                0x00000000000139cc                ___CTOR_LIST__ = .
-                0x00000000000139cc        0x4 LONG 0x0 (((__CTOR_END__ - __CTOR_LIST__) / 0x4) - 0x2)
+ *fill*         0x000000000001395a        0x2 
+ .text          0x000000000001395c      0x158 src/framebuffer.o
+                0x000000000001395c                gtInitFramebuffer
+                0x000000000001399a                gtClearFramebuffer
+                0x00000000000139cc                gtFramebufferUpdate
+                0x00000000000139ec                gtFramebufferPlot
+ .text          0x0000000000013ab4       0x44 src/goat_debug.o
+                0x0000000000013ab4                gtDebugPrintU32
+ .text          0x0000000000013af8       0x34 main.o
+                0x0000000000013af8                main
+ .text          0x0000000000013b2c       0x2e /opt/gendev/sgdk1_3/lib/libgcc.a(_modsi3.o)
+                0x0000000000013b2c                __modsi3
+                0x0000000000013b5c                . = ALIGN (0x4)
+ *fill*         0x0000000000013b5a        0x2 
+                0x0000000000013b5c                __CTOR_LIST__ = .
+                0x0000000000013b5c        0x4 LONG 0x0 (((__CTOR_END__ - __CTOR_LIST__) / 0x4) - 0x2)
  *(.ctors)
-                0x00000000000139d0        0x4 LONG 0x0
-                0x00000000000139d4                __CTOR_END__ = .
-                0x00000000000139d4                __DTOR_LIST__ = .
-                0x00000000000139d4                ___DTOR_LIST__ = .
-                0x00000000000139d4        0x4 LONG 0x0 (((__DTOR_END__ - __DTOR_LIST__) / 0x4) - 0x2)
+                0x0000000000013b60        0x4 LONG 0x0
+                0x0000000000013b64                __CTOR_END__ = .
+                0x0000000000013b64                __DTOR_LIST__ = .
+                0x0000000000013b64        0x4 LONG 0x0 (((__DTOR_END__ - __DTOR_LIST__) / 0x4) - 0x2)
  *(.dtors)
-                0x00000000000139d8        0x4 LONG 0x0
-                0x00000000000139dc                __DTOR_END__ = .
+                0x0000000000013b68        0x4 LONG 0x0
+                0x0000000000013b6c                __DTOR_END__ = .
  *(.rodata .rodata.*)
  .rodata.str1.1
-                0x00000000000139dc      0x13e /opt/gendev/sgdk1_3/lib/libmd.a(sys.o)
+                0x0000000000013b6c      0x13e /opt/gendev/sgdk1_3/lib/libmd.a(sys.o)
  .rodata.str1.1
-                0x0000000000013b1a       0x21 /opt/gendev/sgdk1_3/lib/libmd.a(vdp.o)
+                0x0000000000013caa       0x21 /opt/gendev/sgdk1_3/lib/libmd.a(vdp.o)
                                          0x4c (size before relaxing)
- *fill*         0x0000000000013b3b        0x1 
- .rodata        0x0000000000013b3c        0x6 /opt/gendev/sgdk1_3/lib/libmd.a(vdp.o)
-                0x0000000000013b3c                PLAN_WINDOW
-                0x0000000000013b3e                PLAN_B
-                0x0000000000013b40                PLAN_A
+ *fill*         0x0000000000013ccb        0x1 
+ .rodata        0x0000000000013ccc        0x6 /opt/gendev/sgdk1_3/lib/libmd.a(vdp.o)
+                0x0000000000013ccc                PLAN_WINDOW
+                0x0000000000013cce                PLAN_B
+                0x0000000000013cd0                PLAN_A
  .rodata.str1.1
                 0x0000000000000000        0x2 /opt/gendev/sgdk1_3/lib/libmd.a(tools.o)
  .rodata.str1.1
-                0x0000000000013b42       0x41 /opt/gendev/sgdk1_3/lib/libmd.a(memory.o)
+                0x0000000000013cd2       0x41 /opt/gendev/sgdk1_3/lib/libmd.a(memory.o)
                                          0x42 (size before relaxing)
- *fill*         0x0000000000013b83        0x1 
- .rodata        0x0000000000013b84      0x104 /opt/gendev/sgdk1_3/lib/libmd.a(vdp_pal.o)
-                0x0000000000013b84                palette_blue
-                0x0000000000013ba4                palette_green
-                0x0000000000013bc4                palette_red
-                0x0000000000013be4                palette_grey
-                0x0000000000013c04                palette_black
-                0x0000000000013c08                palette_black_all
- .rodata        0x0000000000013c88      0xe40 /opt/gendev/sgdk1_3/lib/libmd.a(z80_vgm.o)
-                0x0000000000013c88                z80_vgm
+ *fill*         0x0000000000013d13        0x1 
+ .rodata        0x0000000000013d14      0x104 /opt/gendev/sgdk1_3/lib/libmd.a(vdp_pal.o)
+                0x0000000000013d14                palette_blue
+                0x0000000000013d34                palette_green
+                0x0000000000013d54                palette_red
+                0x0000000000013d74                palette_grey
+                0x0000000000013d94                palette_black
+                0x0000000000013d98                palette_black_all
+ .rodata        0x0000000000013e18      0xe40 /opt/gendev/sgdk1_3/lib/libmd.a(z80_vgm.o)
+                0x0000000000013e18                z80_vgm
  .rodata.str1.1
-                0x0000000000014ac8        0x7 /opt/gendev/sgdk1_3/lib/libmd.a(string.o)
- .rodata        0x0000000000014acf       0xeb /opt/gendev/sgdk1_3/lib/libmd.a(string.o)
- .rodata        0x0000000000014bba      0xcec /opt/gendev/sgdk1_3/lib/libmd.a(libres.o)
-                0x0000000000015560                logo_lib
-                0x00000000000157ca                font_lib
-                0x00000000000157f2                font_pal_lib
-                0x00000000000157fa                stop_xgm
- .rodata        0x00000000000158a6     0x1000 /opt/gendev/sgdk1_3/lib/libmd.a(tab_vol.o)
-                0x00000000000158a6                tab_vol
- .rodata        0x00000000000168a6       0x18 /opt/gendev/sgdk1_3/lib/libmd.a(joy.o)
- .rodata        0x00000000000168be     0x1320 src/raycast.o
-                0x00000000000168be                sinLookup
-                0x0000000000016e5e                cosLookup
-                0x00000000000173fe                tanLookup
-                0x000000000001799e                worldMap
- .rodata        0x0000000000017bde       0x20 src/framebuffer.o
-                0x0000000000017bde                stdPalette
- .rodata        0x0000000000017bfe        0xb main.o
+                0x0000000000014c58        0x7 /opt/gendev/sgdk1_3/lib/libmd.a(string.o)
+ .rodata        0x0000000000014c5f       0xeb /opt/gendev/sgdk1_3/lib/libmd.a(string.o)
+ .rodata        0x0000000000014d4a      0xcec /opt/gendev/sgdk1_3/lib/libmd.a(libres.o)
+                0x00000000000156f0                logo_lib
+                0x000000000001595a                font_lib
+                0x0000000000015982                font_pal_lib
+                0x000000000001598a                stop_xgm
+ .rodata        0x0000000000015a36     0x1000 /opt/gendev/sgdk1_3/lib/libmd.a(tab_vol.o)
+                0x0000000000015a36                tab_vol
+ .rodata        0x0000000000016a36       0x18 /opt/gendev/sgdk1_3/lib/libmd.a(joy.o)
+ .rodata        0x0000000000016a4e     0x1375 src/raycast.o
+                0x0000000000016a4e                sinLookup
+                0x0000000000016fee                cosLookup
+                0x000000000001758e                tanLookup
+                0x0000000000017b2e                worldMap
+ *fill*         0x0000000000017dc3        0x1 
+ .rodata        0x0000000000017dc4       0x20 src/framebuffer.o
+                0x0000000000017dc4                stdPalette
+ .rodata        0x0000000000017de4        0xb main.o
  *(.gcc_except_table .gcc_except_table.*)
-                0x0000000000017c0c                . = ALIGN (0x4)
- *fill*         0x0000000000017c09        0x3 
-                0x0000000000017c0c                __INIT_SECTION__ = .
+                0x0000000000017df0                . = ALIGN (0x4)
+ *fill*         0x0000000000017def        0x1 
+                0x0000000000017df0                __INIT_SECTION__ = .
  *(.init)
-                0x0000000000017c0c        0x2 SHORT 0x4e75
-                0x0000000000017c0e                __FINI_SECTION__ = .
+                0x0000000000017df0        0x2 SHORT 0x4e75
+                0x0000000000017df2                __FINI_SECTION__ = .
  *(.fini)
-                0x0000000000017c0e        0x2 SHORT 0x4e75
-                0x0000000000017c10                _etext = .
+                0x0000000000017df2        0x2 SHORT 0x4e75
+                0x0000000000017df4                _etext = .
  *(.lit)
-                0x0000000000017c10                . = ALIGN (0x4)
-                0x0000000000017c10                _stext = SIZEOF (.text)
+                0x0000000000017df4                _stext = SIZEOF (.text)
 
-.data           0x0000000000ff0000        0x4 load address 0x0000000000017c10
+.data           0x0000000000ff0000        0x8 load address 0x0000000000017df4
  *(.got.plt)
  *(.got)
  *(.shdata)
@@ -817,13 +817,13 @@ Linker script and memory map
  .data          0x0000000000ff0000        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(sys.o)
  .data          0x0000000000ff0000        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(vdp.o)
  .data          0x0000000000ff0000        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(dma.o)
- .data          0x0000000000ff0000        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(psg.o)
  .data          0x0000000000ff0000        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(tools.o)
  .data          0x0000000000ff0000        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(memory.o)
  .data          0x0000000000ff0000        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(vdp_tile.o)
  .data          0x0000000000ff0000        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(z80_ctrl.o)
  .data          0x0000000000ff0000        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(ym2612.o)
  .data          0x0000000000ff0000        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(vdp_pal.o)
+ .data          0x0000000000ff0000        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(psg.o)
  .data          0x0000000000ff0000        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(z80_vgm.o)
  .data          0x0000000000ff0000        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(vdp_spr.o)
  .data          0x0000000000ff0000        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(sound.o)
@@ -857,139 +857,138 @@ Linker script and memory map
  .data          0x0000000000ff0000        0x0 /opt/gendev/lib/gcc/m68k-elf/6.3.0/libgcc.a(_udivsi3.o)
  .data          0x0000000000ff0000        0x0 /opt/gendev/lib/gcc/m68k-elf/6.3.0/libgcc.a(_divsi3.o)
  .data          0x0000000000ff0000        0x0 /opt/gendev/lib/gcc/m68k-elf/6.3.0/libgcc.a(_umodsi3.o)
- .data          0x0000000000ff0000        0x4 src/raycast.o
- .data          0x0000000000ff0004        0x0 src/framebuffer.o
- .data          0x0000000000ff0004        0x0 src/goat_debug.o
- .data          0x0000000000ff0004        0x0 main.o
- .data          0x0000000000ff0004        0x0 /opt/gendev/sgdk1_3/lib/libgcc.a(_modsi3.o)
-                0x0000000000ff0004                _edata = .
-                0x0000000000ff0004                . = ALIGN (0x4)
-                0x0000000000000004                _sdata = SIZEOF (.data)
+ .data          0x0000000000ff0000        0x6 src/raycast.o
+ *fill*         0x0000000000ff0006        0x2 
+ .data          0x0000000000ff0008        0x0 src/framebuffer.o
+ .data          0x0000000000ff0008        0x0 src/goat_debug.o
+ .data          0x0000000000ff0008        0x0 main.o
+ .data          0x0000000000ff0008        0x0 /opt/gendev/sgdk1_3/lib/libgcc.a(_modsi3.o)
+                0x0000000000ff0008                _edata = .
+                0x0000000000000008                _sdata = SIZEOF (.data)
 
-.bss            0x0000000000ff0004     0x95b0 load address 0x0000000000017c14
-                0x0000000000ff0004                __bss_start = .
+.bss            0x0000000000ff0008     0x95b0 load address 0x0000000000017dfc
+                0x0000000000ff0008                _start = .
  *(.shbss)
  *(.bss .bss.*)
- .bss           0x0000000000ff0004        0x0 boot/sega.o
- .bss           0x0000000000ff0004       0x14 /opt/gendev/sgdk1_3/lib/libmd.a(sys.o)
- .bss           0x0000000000ff0018       0x13 /opt/gendev/sgdk1_3/lib/libmd.a(vdp.o)
- *fill*         0x0000000000ff002b        0x1 
- .bss           0x0000000000ff002c       0x16 /opt/gendev/sgdk1_3/lib/libmd.a(dma.o)
-                0x0000000000ff002c                dmaQueues
- *fill*         0x0000000000ff0042        0x2 
- .bss           0x0000000000ff0044        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(psg.o)
- .bss           0x0000000000ff0044       0x10 /opt/gendev/sgdk1_3/lib/libmd.a(tools.o)
- .bss           0x0000000000ff0054        0x8 /opt/gendev/sgdk1_3/lib/libmd.a(memory.o)
- .bss           0x0000000000ff005c        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(vdp_tile.o)
- .bss           0x0000000000ff005c        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(z80_ctrl.o)
- .bss           0x0000000000ff005c        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(ym2612.o)
- .bss           0x0000000000ff005c      0x386 /opt/gendev/sgdk1_3/lib/libmd.a(vdp_pal.o)
- *fill*         0x0000000000ff03e2        0x2 
- .bss           0x0000000000ff03e4        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(z80_vgm.o)
- .bss           0x0000000000ff03e4      0x144 /opt/gendev/sgdk1_3/lib/libmd.a(vdp_spr.o)
- .bss           0x0000000000ff0528        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(sound.o)
- .bss           0x0000000000ff0528        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(string.o)
- .bss           0x0000000000ff0528        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(vdp_dma.o)
- .bss           0x0000000000ff0528       0x14 /opt/gendev/sgdk1_3/lib/libmd.a(bmp.o)
- .bss           0x0000000000ff053c       0x40 /opt/gendev/sgdk1_3/lib/libmd.a(timer.o)
- .bss           0x0000000000ff057c        0x4 /opt/gendev/sgdk1_3/lib/libmd.a(tile_cache.o)
- .bss           0x0000000000ff0580        0x4 /opt/gendev/sgdk1_3/lib/libmd.a(vdp_bg.o)
- .bss           0x0000000000ff0584        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(memory_a.o)
- .bss           0x0000000000ff0584        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(smp_null_pcm.o)
- .bss           0x0000000000ff0584        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(vdp_tile_a.o)
- .bss           0x0000000000ff0584        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(vdp_pal_a.o)
- .bss           0x0000000000ff0584        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(sys_a.o)
- .bss           0x0000000000ff0584        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(kdebug.o)
- .bss           0x0000000000ff0584        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(smp_null.o)
- .bss           0x0000000000ff0584        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(bmp_a.o)
- .bss           0x0000000000ff0584        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(tools_a.o)
- .bss           0x0000000000ff0584        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(z80_drv1.o)
- .bss           0x0000000000ff0584        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(z80_tfm.o)
- .bss           0x0000000000ff0584        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(z80_drv2.o)
- .bss           0x0000000000ff0584        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(z80_drv3.o)
- .bss           0x0000000000ff0584        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(z80_xgm.o)
- .bss           0x0000000000ff0584        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(z80_mvs.o)
- .bss           0x0000000000ff0584        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(libres.o)
- .bss           0x0000000000ff0584        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(tab_vol.o)
- .bss           0x0000000000ff0584       0x46 /opt/gendev/sgdk1_3/lib/libmd.a(joy.o)
- *fill*         0x0000000000ff05ca        0x2 
- .bss           0x0000000000ff05cc       0x8c /opt/gendev/sgdk1_3/lib/libmd.a(xgm.o)
-                0x0000000000ff05cc                xgmTempoCnt
- .bss           0x0000000000ff0658        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(types.o)
- .bss           0x0000000000ff0658        0x0 /opt/gendev/lib/gcc/m68k-elf/6.3.0/libgcc.a(_mulsi3.o)
- .bss           0x0000000000ff0658        0x0 /opt/gendev/lib/gcc/m68k-elf/6.3.0/libgcc.a(_udivsi3.o)
- .bss           0x0000000000ff0658        0x0 /opt/gendev/lib/gcc/m68k-elf/6.3.0/libgcc.a(_divsi3.o)
- .bss           0x0000000000ff0658        0x0 /opt/gendev/lib/gcc/m68k-elf/6.3.0/libgcc.a(_umodsi3.o)
- .bss           0x0000000000ff0658        0x4 src/raycast.o
- .bss           0x0000000000ff065c     0x8c01 src/framebuffer.o
- *fill*         0x0000000000ff925d        0x3 
- .bss           0x0000000000ff9260        0x0 src/goat_debug.o
- .bss           0x0000000000ff9260        0x0 main.o
- .bss           0x0000000000ff9260        0x0 /opt/gendev/sgdk1_3/lib/libgcc.a(_modsi3.o)
+ .bss           0x0000000000ff0008        0x0 boot/sega.o
+ .bss           0x0000000000ff0008       0x14 /opt/gendev/sgdk1_3/lib/libmd.a(sys.o)
+ .bss           0x0000000000ff001c       0x13 /opt/gendev/sgdk1_3/lib/libmd.a(vdp.o)
+ *fill*         0x0000000000ff002f        0x1 
+ .bss           0x0000000000ff0030       0x16 /opt/gendev/sgdk1_3/lib/libmd.a(dma.o)
+                0x0000000000ff0030                dmaQueues
+ *fill*         0x0000000000ff0046        0x2 
+ .bss           0x0000000000ff0048       0x10 /opt/gendev/sgdk1_3/lib/libmd.a(tools.o)
+ .bss           0x0000000000ff0058        0x8 /opt/gendev/sgdk1_3/lib/libmd.a(memory.o)
+ .bss           0x0000000000ff0060        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(vdp_tile.o)
+ .bss           0x0000000000ff0060        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(z80_ctrl.o)
+ .bss           0x0000000000ff0060        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(ym2612.o)
+ .bss           0x0000000000ff0060      0x386 /opt/gendev/sgdk1_3/lib/libmd.a(vdp_pal.o)
+ *fill*         0x0000000000ff03e6        0x2 
+ .bss           0x0000000000ff03e8        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(psg.o)
+ .bss           0x0000000000ff03e8        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(z80_vgm.o)
+ .bss           0x0000000000ff03e8      0x144 /opt/gendev/sgdk1_3/lib/libmd.a(vdp_spr.o)
+ .bss           0x0000000000ff052c        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(sound.o)
+ .bss           0x0000000000ff052c        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(string.o)
+ .bss           0x0000000000ff052c        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(vdp_dma.o)
+ .bss           0x0000000000ff052c       0x14 /opt/gendev/sgdk1_3/lib/libmd.a(bmp.o)
+ .bss           0x0000000000ff0540       0x40 /opt/gendev/sgdk1_3/lib/libmd.a(timer.o)
+ .bss           0x0000000000ff0580        0x4 /opt/gendev/sgdk1_3/lib/libmd.a(tile_cache.o)
+ .bss           0x0000000000ff0584        0x4 /opt/gendev/sgdk1_3/lib/libmd.a(vdp_bg.o)
+ .bss           0x0000000000ff0588        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(memory_a.o)
+ .bss           0x0000000000ff0588        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(smp_null_pcm.o)
+ .bss           0x0000000000ff0588        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(vdp_tile_a.o)
+ .bss           0x0000000000ff0588        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(vdp_pal_a.o)
+ .bss           0x0000000000ff0588        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(sys_a.o)
+ .bss           0x0000000000ff0588        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(kdebug.o)
+ .bss           0x0000000000ff0588        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(smp_null.o)
+ .bss           0x0000000000ff0588        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(bmp_a.o)
+ .bss           0x0000000000ff0588        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(tools_a.o)
+ .bss           0x0000000000ff0588        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(z80_drv1.o)
+ .bss           0x0000000000ff0588        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(z80_tfm.o)
+ .bss           0x0000000000ff0588        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(z80_drv2.o)
+ .bss           0x0000000000ff0588        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(z80_drv3.o)
+ .bss           0x0000000000ff0588        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(z80_xgm.o)
+ .bss           0x0000000000ff0588        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(z80_mvs.o)
+ .bss           0x0000000000ff0588        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(libres.o)
+ .bss           0x0000000000ff0588        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(tab_vol.o)
+ .bss           0x0000000000ff0588       0x46 /opt/gendev/sgdk1_3/lib/libmd.a(joy.o)
+ *fill*         0x0000000000ff05ce        0x2 
+ .bss           0x0000000000ff05d0       0x8c /opt/gendev/sgdk1_3/lib/libmd.a(xgm.o)
+                0x0000000000ff05d0                xgmTempoCnt
+ .bss           0x0000000000ff065c        0x0 /opt/gendev/sgdk1_3/lib/libmd.a(types.o)
+ .bss           0x0000000000ff065c        0x0 /opt/gendev/lib/gcc/m68k-elf/6.3.0/libgcc.a(_mulsi3.o)
+ .bss           0x0000000000ff065c        0x0 /opt/gendev/lib/gcc/m68k-elf/6.3.0/libgcc.a(_udivsi3.o)
+ .bss           0x0000000000ff065c        0x0 /opt/gendev/lib/gcc/m68k-elf/6.3.0/libgcc.a(_divsi3.o)
+ .bss           0x0000000000ff065c        0x0 /opt/gendev/lib/gcc/m68k-elf/6.3.0/libgcc.a(_umodsi3.o)
+ .bss           0x0000000000ff065c        0x2 src/raycast.o
+ *fill*         0x0000000000ff065e        0x2 
+ .bss           0x0000000000ff0660     0x8c01 src/framebuffer.o
+ *fill*         0x0000000000ff9261        0x3 
+ .bss           0x0000000000ff9264        0x0 src/goat_debug.o
+ .bss           0x0000000000ff9264        0x0 main.o
+ .bss           0x0000000000ff9264        0x0 /opt/gendev/sgdk1_3/lib/libgcc.a(_modsi3.o)
  *(COMMON)
- COMMON         0x0000000000ff9260       0x94 /opt/gendev/sgdk1_3/lib/libmd.a(sys.o)
-                0x0000000000ff9260                illegalInstCB
-                0x0000000000ff9264                errorExceptionCB
-                0x0000000000ff9268                trapvInstCB
-                0x0000000000ff926c                chkInstCB
-                0x0000000000ff9270                registerState
-                0x0000000000ff92b0                srState
-                0x0000000000ff92b2                line1x1xCB
-                0x0000000000ff92b6                ext2State
-                0x0000000000ff92b8                traceCB
-                0x0000000000ff92bc                intTrace
-                0x0000000000ff92be                zeroDivideCB
-                0x0000000000ff92c2                internalExtIntCB
-                0x0000000000ff92c6                internalVIntCB
-                0x0000000000ff92ca                intCB
-                0x0000000000ff92ce                addressErrorCB
-                0x0000000000ff92d2                VIntProcess
-                0x0000000000ff92d6                ExtIntProcess
-                0x0000000000ff92da                HIntProcess
-                0x0000000000ff92de                privilegeViolationCB
-                0x0000000000ff92e2                pcState
-                0x0000000000ff92e6                ext1State
-                0x0000000000ff92e8                busErrorCB
-                0x0000000000ff92ec                internalHIntCB
-                0x0000000000ff92f0                addrState
- COMMON         0x0000000000ff92f4       0x1c /opt/gendev/sgdk1_3/lib/libmd.a(vdp.o)
-                0x0000000000ff92f4                window_addr
-                0x0000000000ff92f6                hscrl_addr
-                0x0000000000ff92f8                planHeightSft
-                0x0000000000ff92fa                windowWidth
-                0x0000000000ff92fc                planWidth
-                0x0000000000ff92fe                slist_addr
-                0x0000000000ff9300                windowWidthSft
-                0x0000000000ff9302                screenHeight
-                0x0000000000ff9304                screenWidth
-                0x0000000000ff9306                maps_addr
-                0x0000000000ff9308                planWidthSft
-                0x0000000000ff930a                planHeight
-                0x0000000000ff930c                aplan_addr
-                0x0000000000ff930e                bplan_addr
- COMMON         0x0000000000ff9310        0x2 /opt/gendev/sgdk1_3/lib/libmd.a(tools.o)
-                0x0000000000ff9310                randbase
- COMMON         0x0000000000ff9312        0x4 /opt/gendev/sgdk1_3/lib/libmd.a(z80_ctrl.o)
-                0x0000000000ff9312                driverFlags
-                0x0000000000ff9314                currentDriver
- COMMON         0x0000000000ff9316      0x286 /opt/gendev/sgdk1_3/lib/libmd.a(vdp_spr.o)
-                0x0000000000ff9316                lastAllocatedVDPSprite
-                0x0000000000ff931a                vdpSpriteCache
-                0x0000000000ff959a                highestVDPSpriteIndex
- COMMON         0x0000000000ff959c        0xe /opt/gendev/sgdk1_3/lib/libmd.a(bmp.o)
-                0x0000000000ff959c                bmp_buffer_write
-                0x0000000000ff95a0                bmp_buffer_read
-                0x0000000000ff95a4                bmp_plan
-                0x0000000000ff95a6                bmp_plan_adr
- COMMON         0x0000000000ff95aa        0x4 /opt/gendev/sgdk1_3/lib/libmd.a(timer.o)
-                0x0000000000ff95aa                vtimer
- COMMON         0x0000000000ff95ae        0x4 /opt/gendev/sgdk1_3/lib/libmd.a(tile_cache.o)
-                0x0000000000ff95ae                uploads
- COMMON         0x0000000000ff95b2        0x2 /opt/gendev/sgdk1_3/lib/libmd.a(vdp_bg.o)
-                0x0000000000ff95b2                curTileInd
-                0x0000000000ff95b8                _end = ALIGN (0x8)
-                0x0000000000ff95b8                __end = _end
-                0x0000000000ff95b8                end = _end
+ COMMON         0x0000000000ff9264       0x94 /opt/gendev/sgdk1_3/lib/libmd.a(sys.o)
+                0x0000000000ff9264                illegalInstCB
+                0x0000000000ff9268                errorExceptionCB
+                0x0000000000ff926c                trapvInstCB
+                0x0000000000ff9270                chkInstCB
+                0x0000000000ff9274                registerState
+                0x0000000000ff92b4                srState
+                0x0000000000ff92b6                line1x1xCB
+                0x0000000000ff92ba                ext2State
+                0x0000000000ff92bc                traceCB
+                0x0000000000ff92c0                intTrace
+                0x0000000000ff92c2                zeroDivideCB
+                0x0000000000ff92c6                internalExtIntCB
+                0x0000000000ff92ca                internalVIntCB
+                0x0000000000ff92ce                intCB
+                0x0000000000ff92d2                addressErrorCB
+                0x0000000000ff92d6                VIntProcess
+                0x0000000000ff92da                ExtIntProcess
+                0x0000000000ff92de                HIntProcess
+                0x0000000000ff92e2                privilegeViolationCB
+                0x0000000000ff92e6                pcState
+                0x0000000000ff92ea                ext1State
+                0x0000000000ff92ec                busErrorCB
+                0x0000000000ff92f0                internalHIntCB
+                0x0000000000ff92f4                addrState
+ COMMON         0x0000000000ff92f8       0x1c /opt/gendev/sgdk1_3/lib/libmd.a(vdp.o)
+                0x0000000000ff92f8                window_addr
+                0x0000000000ff92fa                hscrl_addr
+                0x0000000000ff92fc                planHeightSft
+                0x0000000000ff92fe                windowWidth
+                0x0000000000ff9300                planWidth
+                0x0000000000ff9302                slist_addr
+                0x0000000000ff9304                windowWidthSft
+                0x0000000000ff9306                screenHeight
+                0x0000000000ff9308                screenWidth
+                0x0000000000ff930a                maps_addr
+                0x0000000000ff930c                planWidthSft
+                0x0000000000ff930e                planHeight
+                0x0000000000ff9310                aplan_addr
+                0x0000000000ff9312                bplan_addr
+ COMMON         0x0000000000ff9314        0x2 /opt/gendev/sgdk1_3/lib/libmd.a(tools.o)
+                0x0000000000ff9314                randbase
+ COMMON         0x0000000000ff9316        0x4 /opt/gendev/sgdk1_3/lib/libmd.a(z80_ctrl.o)
+                0x0000000000ff9316                driverFlags
+                0x0000000000ff9318                currentDriver
+ COMMON         0x0000000000ff931a      0x286 /opt/gendev/sgdk1_3/lib/libmd.a(vdp_spr.o)
+                0x0000000000ff931a                lastAllocatedVDPSprite
+                0x0000000000ff931e                vdpSpriteCache
+                0x0000000000ff959e                highestVDPSpriteIndex
+ COMMON         0x0000000000ff95a0        0xe /opt/gendev/sgdk1_3/lib/libmd.a(bmp.o)
+                0x0000000000ff95a0                bmp_buffer_write
+                0x0000000000ff95a4                bmp_buffer_read
+                0x0000000000ff95a8                bmp_plan
+                0x0000000000ff95aa                bmp_plan_adr
+ COMMON         0x0000000000ff95ae        0x4 /opt/gendev/sgdk1_3/lib/libmd.a(timer.o)
+                0x0000000000ff95ae                vtimer
+ COMMON         0x0000000000ff95b2        0x4 /opt/gendev/sgdk1_3/lib/libmd.a(tile_cache.o)
+                0x0000000000ff95b2                uploads
+ COMMON         0x0000000000ff95b6        0x2 /opt/gendev/sgdk1_3/lib/libmd.a(vdp_bg.o)
+                0x0000000000ff95b6                curTileInd
+                0x0000000000ff95b8                _bend = .
 
 .stab
  *(.stab)
@@ -1018,13 +1017,13 @@ OUTPUT(out.elf elf32-m68k)
                                          0x12 (size before relaxing)
  .comment       0x0000000000000000       0x12 /opt/gendev/sgdk1_3/lib/libmd.a(vdp.o)
  .comment       0x0000000000000000       0x12 /opt/gendev/sgdk1_3/lib/libmd.a(dma.o)
- .comment       0x0000000000000000       0x12 /opt/gendev/sgdk1_3/lib/libmd.a(psg.o)
  .comment       0x0000000000000000       0x12 /opt/gendev/sgdk1_3/lib/libmd.a(tools.o)
  .comment       0x0000000000000000       0x12 /opt/gendev/sgdk1_3/lib/libmd.a(memory.o)
  .comment       0x0000000000000000       0x12 /opt/gendev/sgdk1_3/lib/libmd.a(vdp_tile.o)
  .comment       0x0000000000000000       0x12 /opt/gendev/sgdk1_3/lib/libmd.a(z80_ctrl.o)
  .comment       0x0000000000000000       0x12 /opt/gendev/sgdk1_3/lib/libmd.a(ym2612.o)
  .comment       0x0000000000000000       0x12 /opt/gendev/sgdk1_3/lib/libmd.a(vdp_pal.o)
+ .comment       0x0000000000000000       0x12 /opt/gendev/sgdk1_3/lib/libmd.a(psg.o)
  .comment       0x0000000000000000       0x12 /opt/gendev/sgdk1_3/lib/libmd.a(z80_vgm.o)
  .comment       0x0000000000000000       0x12 /opt/gendev/sgdk1_3/lib/libmd.a(vdp_spr.o)
  .comment       0x0000000000000000       0x12 /opt/gendev/sgdk1_3/lib/libmd.a(sound.o)
